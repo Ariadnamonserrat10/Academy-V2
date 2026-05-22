@@ -1,0 +1,9 @@
+[workspace]
+members = [
+    "contracts/users",
+    "contracts/courses",
+    "contracts/payments",
+    "contracts/certificates",
+    "contracts/materials",
+]
+resolver = "2"

@@ -1,0 +1,41 @@
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_0.autocfg_250a0a12a2432381_0.d9063900be4eed43-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_0.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_1.autocfg_250a0a12a2432381_1.93a32a07e19abc13-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_1.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+warning: autocfg could not probe for `std`
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_2.autocfg_250a0a12a2432381_2.f9778fa75f875197-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_2.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_3.autocfg_250a0a12a2432381_3.ff68ee4dd9dcb5-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_3.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_4.autocfg_250a0a12a2432381_4.6a69b9d2d1c69c2d-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_4.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_5.autocfg_250a0a12a2432381_5.8ebac0640c69ae08-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_5.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_6.autocfg_250a0a12a2432381_6.d6a55dcf44720934-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_6.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_7.autocfg_250a0a12a2432381_7.f6f18b5c43c6bc5b-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_7.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_8.autocfg_250a0a12a2432381_8.c8a3f7e453fba099-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_8.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_9.autocfg_250a0a12a2432381_9.bffdc00f7cfe02de-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-traits-ba780fc3a80ac379/out/autocfg_250a0a12a2432381_9.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+

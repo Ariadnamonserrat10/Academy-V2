@@ -1,0 +1,13 @@
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-integer-b5c5d67b3186fba9/out/autocfg_f6a2882d93f4b1eb_0.autocfg_f6a2882d93f4b1eb_0.ae7d6e5c869fb6f-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-integer-b5c5d67b3186fba9/out/autocfg_f6a2882d93f4b1eb_0.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-integer-b5c5d67b3186fba9/out/autocfg_f6a2882d93f4b1eb_1.autocfg_f6a2882d93f4b1eb_1.3e6b8a63879f02bf-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-integer-b5c5d67b3186fba9/out/autocfg_f6a2882d93f4b1eb_1.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+warning: autocfg could not probe for `std`
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-integer-b5c5d67b3186fba9/out/autocfg_f6a2882d93f4b1eb_2.autocfg_f6a2882d93f4b1eb_2.442da08833196157-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-integer-b5c5d67b3186fba9/out/autocfg_f6a2882d93f4b1eb_2.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+

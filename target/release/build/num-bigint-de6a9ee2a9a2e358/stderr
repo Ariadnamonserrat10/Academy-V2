@@ -1,0 +1,43 @@
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-bigint-de6a9ee2a9a2e358/out/autocfg_147d6cb7d1baf76d_0.autocfg_147d6cb7d1baf76d_0.d7ea260d0baaa5a0-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-bigint-de6a9ee2a9a2e358/out/autocfg_147d6cb7d1baf76d_0.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-bigint-de6a9ee2a9a2e358/out/autocfg_147d6cb7d1baf76d_1.autocfg_147d6cb7d1baf76d_1.9f1c729f3db15e7c-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-bigint-de6a9ee2a9a2e358/out/autocfg_147d6cb7d1baf76d_1.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+warning: autocfg could not probe for `std`
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-bigint-de6a9ee2a9a2e358/out/autocfg_147d6cb7d1baf76d_2.autocfg_147d6cb7d1baf76d_2.9f0ea0187f92199d-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/num-bigint-de6a9ee2a9a2e358/out/autocfg_147d6cb7d1baf76d_2.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+error[E0433]: cannot find `core` in the crate root
+ --> <anon>:1:9
+  |
+1 | pub use core::convert::TryFrom;
+  |         ^^^^ you might be missing crate `core`
+  |
+help: try using `std` instead of `core`
+  |
+1 - pub use core::convert::TryFrom;
+1 + pub use std::convert::TryFrom;
+  |
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0433`.
+error[E0433]: cannot find `core` in the crate root
+ --> <anon>:1:9
+  |
+1 | pub use core::arch::x86_64::_addcarry_u64;
+  |         ^^^^ you might be missing crate `core`
+  |
+help: try using `std` instead of `core`
+  |
+1 - pub use core::arch::x86_64::_addcarry_u64;
+1 + pub use std::arch::x86_64::_addcarry_u64;
+  |
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0433`.

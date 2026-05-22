@@ -1,0 +1,13 @@
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/indexmap-dcfa18168e2bd650/out/autocfg_97a612e61747eea7_0.autocfg_97a612e61747eea7_0.2a06e1e92f6d9438-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/indexmap-dcfa18168e2bd650/out/autocfg_97a612e61747eea7_0.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/indexmap-dcfa18168e2bd650/out/autocfg_97a612e61747eea7_1.autocfg_97a612e61747eea7_1.8312e37e301af9f2-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/indexmap-dcfa18168e2bd650/out/autocfg_97a612e61747eea7_1.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
+warning: autocfg could not probe for `std`
+error: could not copy "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/indexmap-dcfa18168e2bd650/out/autocfg_97a612e61747eea7_2.autocfg_97a612e61747eea7_2.d10407be59a7cb98-cgu.0.rcgu.ll" to "/mnt/c/Users/osita/OneDrive/Escritorio/Academy/target/release/build/indexmap-dcfa18168e2bd650/out/autocfg_97a612e61747eea7_2.ll": Operation not permitted (os error 1)
+
+error: aborting due to 1 previous error
+
