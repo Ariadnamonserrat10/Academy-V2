@@ -11,13 +11,16 @@ export default function Navbar() {
   const navigate = useNavigate()
   const [showWalletMenu, setShowWalletMenu] = useState(false)
   const [manualPk, setManualPk] = useState('')
+  const [walletJustConnected, setWalletJustConnected] = useState<'login' | 'register' | null>(null)
   const menuRef = useRef<HTMLDivElement>(null)
-  const initialRender = useRef(true)
 
   useEffect(() => {
-    if (initialRender.current) { initialRender.current = false; return }
-    if (isConnected && !role && ready) navigate('/login')
-  }, [isConnected, role, ready])
+    if (!walletJustConnected || !ready) return
+    if (isConnected && !role) {
+      navigate(walletJustConnected === 'login' ? '/login' : '/register')
+      setWalletJustConnected(null)
+    }
+  }, [isConnected, role, ready, walletJustConnected, navigate])
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -29,12 +32,14 @@ export default function Navbar() {
 
   const handleConnect = async () => {
     clearError()
+    setWalletJustConnected('login')
     const pk = await connect()
     if (pk) setShowWalletMenu(false)
   }
 
   const handleManualConnect = () => {
     if (!manualPk.startsWith('G')) return
+    setWalletJustConnected('login')
     connectManual(manualPk)
     setManualPk('')
     setShowWalletMenu(false)
@@ -153,7 +158,7 @@ export default function Navbar() {
                           <div className="flex-1 h-px bg-slate-200 dark:bg-slate-600" />
                         </div>
 
-                        <MiniWalletGenerator onConnected={(pk, sk) => { connectManual(pk, sk); setShowWalletMenu(false) }} />
+                        <MiniWalletGenerator onConnected={(pk, sk) => { setWalletJustConnected('register'); connectManual(pk, sk); setShowWalletMenu(false) }} />
 
                         <div className="relative flex items-center gap-2">
                           <div className="flex-1 h-px bg-slate-200 dark:bg-slate-600" />

@@ -93,7 +93,6 @@ export async function registerPasskey(
 ): Promise<PasskeyRegistration> {
   if (!isWebAuthnAvailable()) throw new PasskeyNotSupported()
 
-  const available = await isPlatformAuthenticatorAvailable()
   const rpId = getRpId()
 
   const challenge = crypto.getRandomValues(new Uint8Array(32))
@@ -115,11 +114,10 @@ export async function registerPasskey(
           { type: 'public-key', alg: -257 },
         ],
         authenticatorSelection: {
-          authenticatorAttachment: available ? 'platform' : 'cross-platform',
           residentKey: 'required',
           userVerification: 'required',
         },
-        timeout: 60000,
+        timeout: 30000,
         attestation: 'none',
       },
     }) as PublicKeyCredential | null
@@ -144,8 +142,6 @@ export async function authenticateWithPasskey(
 ): Promise<{ credentialId: string; signature: string; authenticatorData: string }> {
   if (!isWebAuthnAvailable()) throw new PasskeyNotSupported()
 
-  const isConditional = await isConditionalMediationAvailable()
-
   const challengeBytes = challenge
     ? parseBase64url(challenge.challenge).buffer as ArrayBuffer
     : crypto.getRandomValues(new Uint8Array(32)).buffer
@@ -158,9 +154,8 @@ export async function authenticateWithPasskey(
         rpId: getRpId(),
         allowCredentials: [],
         userVerification: 'required',
-        timeout: 60000,
+        timeout: 30000,
       },
-      ...(isConditional ? { mediation: 'conditional' as const } : {}),
     }) as PublicKeyCredential | null
   } catch (e: any) {
     if (e?.name === 'NotAllowedError' || e?.name === 'AbortError') throw new PasskeyCancelled()

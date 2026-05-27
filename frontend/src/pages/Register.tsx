@@ -7,40 +7,42 @@ import { useAuth } from '../context/AuthContext'
 import { hashImage } from '../context/AuthContext'
 import { CATEGORIES, EDUCATION_LEVELS } from '../utils/constants'
 import { generateTestnetWallet, AccountGenerationError, GeneratedWallet } from '../utils/walletGenerator'
-import { registerPasskey, isPasskeyAvailable, isWindowsHelloAvailable, PasskeyRegistration, requireBiometric } from '../utils/passkeyAuth'
-
-const TOTAL_STEPS = (role: string) => role === 'teacher' ? 2 : 3
+import { registerPasskey, isPasskeyAvailable, PasskeyRegistration } from '../utils/passkeyAuth'
+import { useNftBiometricGate } from '../hooks/useNftBiometricGate'
 
 export default function Register() {
   const { address, isConnected, connect, connectManual, error: web3Error } = useWeb3()
   const { login, loginTeacher, setInterests, saveAccount, savePasskeyForAccount } = useAuth()
   const navigate = useNavigate()
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const pendingPasskeyRef = useRef<PasskeyRegistration | null>(null)
+  const addressRef = useRef(address)
+  addressRef.current = address
+
   const [role, setRole] = useState<'student' | 'teacher'>('student')
   const [step, setStep] = useState(1)
   const [nftImage, setNftImage] = useState<string | null>(null)
-  const [passkeyStatus, setPasskeyStatus] = useState<'idle' | 'loading' | 'done' | 'error' | 'unsupported'>('idle')
+  const [passkeyStatus, setPasskeyStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
   const [passkeyError, setPasskeyError] = useState<string | null>(null)
   const [passkeySupport, setPasskeySupport] = useState<{ webAuthn: boolean; platform: boolean; windowsHello: boolean } | null>(null)
-  const [nftBiometricOk, setNftBiometricOk] = useState(false)
-  const [nftBiometricLoading, setNftBiometricLoading] = useState(false)
-  const [nftBiometricError, setNftBiometricError] = useState<string | null>(null)
   const [form, setForm] = useState({
-    name: '',
-    email: '',
-    username: '',
-    specialty: '',
-    educationLevel: '',
-    favoriteSubjects: [] as string[],
-    interest: '',
-    goal: '',
+    name: '', email: '', username: '', specialty: '', educationLevel: '',
+    favoriteSubjects: [] as string[], interest: '', goal: '',
   })
 
   const totalSteps = role === 'teacher' ? 2 : 3
 
+  const { nftBiometricOk, nftBiometricLoading, nftBiometricError, requireFor, pendingPasskeyRef } = useNftBiometricGate({
+    autoRegister: true,
+    walletAddress: address,
+  })
+
+  // Keep hook's pendingPasskeyRef in sync with passkeyStatus
   useEffect(() => {
-    isPasskeyAvailable().then(setPasskeySupport).catch(() => {})
+    if (pendingPasskeyRef.current) setPasskeyStatus('done')
+  }, [pendingPasskeyRef.current])
+
+  useEffect(() => {
+    isPasskeyAvailable().then(s => setPasskeySupport(s)).catch(() => {})
   }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -56,36 +58,8 @@ export default function Register() {
     }))
   }
 
-  const requireNftBiometric = async (action: string): Promise<boolean> => {
-    if (nftBiometricOk) return true
-    setNftBiometricLoading(true)
-    setNftBiometricError(null)
-    try {
-      if (pendingPasskeyRef.current || passkeyStatus === 'done') {
-        const result = await requireBiometric(`Verificar identidad para ${action}`)
-        if (result.ok) { setNftBiometricOk(true); return true }
-        setNftBiometricError(result.error || 'Verificación cancelada')
-        return false
-      }
-      const reg = await registerPasskey(address || 'manual')
-      pendingPasskeyRef.current = reg
-      setNftBiometricOk(true)
-      setPasskeyStatus('done')
-      return true
-    } catch (e: any) {
-      if (e?.name === 'PasskeyCancelled' || e?.message === 'USER_CANCELLED') {
-        setNftBiometricError('Verificación cancelada')
-      } else {
-        setNftBiometricError(e?.message || 'Error de verificación')
-      }
-      return false
-    } finally {
-      setNftBiometricLoading(false)
-    }
-  }
-
   const handleUploadClick = async () => {
-    const ok = await requireNftBiometric('subir imagen NFT')
+    const ok = await requireFor('subir imagen NFT')
     if (ok) fileInputRef.current?.click()
   }
 
@@ -98,7 +72,7 @@ export default function Register() {
   }
 
   const generateNftAvatar = async () => {
-    const ok = await requireNftBiometric('generar avatar NFT')
+    const ok = await requireFor('generar avatar NFT')
     if (!ok) return
     const canvas = document.createElement('canvas')
     canvas.width = 200; canvas.height = 200
@@ -125,7 +99,7 @@ export default function Register() {
     setPasskeyStatus('loading')
     setPasskeyError(null)
     try {
-      const reg = await registerPasskey(address || 'manual')
+      const reg = await registerPasskey(addressRef.current || 'manual')
       pendingPasskeyRef.current = reg
       setPasskeyStatus('done')
     } catch (e: any) {
@@ -141,7 +115,7 @@ export default function Register() {
   const handleRegister = async () => {
     if (!nftImage) { alert('Debes subir o generar una imagen NFT de identidad'); return }
     const nftHash = await hashImage(nftImage)
-    let walletAddress = address
+    let walletAddress = addressRef.current
     if (!walletAddress) walletAddress = await connect()
 
     if (role === 'student') {
@@ -154,11 +128,10 @@ export default function Register() {
       specialty: form.specialty, educationLevel: form.educationLevel,
     })
 
-    // Apply pending passkey credential now that the account exists
     if (pendingPasskeyRef.current) {
       try {
         savePasskeyForAccount(form.username, pendingPasskeyRef.current.credentialId, pendingPasskeyRef.current.publicKey)
-      } catch { /* passkey already stored in ref, best-effort */ }
+      } catch { /* best-effort */ }
     }
 
     if (role === 'student') {
@@ -187,9 +160,7 @@ export default function Register() {
           <div className="flex items-center gap-2 mb-8">
             {Array.from({ length: totalSteps }, (_, i) => i + 1).map((s) => (
               <div key={s} className="flex items-center gap-2 flex-1">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${step >= s ? 'gradient-primary text-white' : 'bg-slate-200 dark:bg-slate-600 text-slate-400'}`}>
-                  {s}
-                </div>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${step >= s ? 'gradient-primary text-white' : 'bg-slate-200 dark:bg-slate-600 text-slate-400'}`}>{s}</div>
                 {s < totalSteps && <div className={`flex-1 h-0.5 ${step > s ? 'bg-primary-500' : 'bg-slate-200 dark:bg-slate-600'}`} />}
               </div>
             ))}
@@ -308,7 +279,7 @@ export default function Register() {
                     <FiCheckCircle className="w-3 h-3" /> Identidad verificada con Windows Hello
                   </div>
                 )}
-                {nftBiometricError && (
+                {nftBiometricError && !nftBiometricLoading && (
                   <div className="flex items-center gap-1.5 text-xs text-red-500">
                     <FiAlertCircle className="w-3 h-3" /> {nftBiometricError}
                   </div>
@@ -371,6 +342,8 @@ export default function Register() {
                     </div>
                     <button onClick={handleRegisterPasskey} className="text-xs text-primary-500 hover:text-primary-600 underline">Reintentar</button>
                   </div>
+                ) : passkeyStatus === 'loading' ? (
+                  <p className="text-xs text-slate-400 text-center py-2">Registrando...</p>
                 ) : (
                   <div>
                     <p className="text-xs text-slate-500 mb-3">
@@ -382,14 +355,9 @@ export default function Register() {
                     </p>
                     <button
                       onClick={handleRegisterPasskey}
-                      disabled={passkeyStatus === 'loading'}
-                      className="w-full py-2 border-2 border-dashed border-blue-300 dark:border-blue-600 text-blue-600 dark:text-blue-400 rounded-lg text-sm font-medium hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                      className="w-full py-2 border-2 border-dashed border-blue-300 dark:border-blue-600 text-blue-600 dark:text-blue-400 rounded-lg text-sm font-medium hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all flex items-center justify-center gap-2"
                     >
-                      {passkeyStatus === 'loading' ? (
-                        'Registrando...'
-                      ) : (
-                        <><FiSmartphone className="w-4 h-4" /> Registrar {passkeySupport.windowsHello ? 'Windows Hello' : 'Passkey'}</>
-                      )}
+                      <FiSmartphone className="w-4 h-4" /> Registrar {passkeySupport.windowsHello ? 'Windows Hello' : 'Passkey'}
                     </button>
                     <p className="text-[10px] text-slate-400 mt-1.5 text-center">Opcional — puedes saltar este paso</p>
                   </div>
@@ -429,17 +397,13 @@ function GenerateWalletSection({ onConnected }: { onConnected: (pk: string, sk: 
   const [used, setUsed] = useState(false)
 
   const handleGenerate = async () => {
-    setGenerating(true)
-    setError(null)
-    setWallet(null)
+    setGenerating(true); setError(null); setWallet(null)
     try {
       const result = await generateTestnetWallet()
       setWallet(result)
     } catch (e: any) {
       setError(e.message || 'Error al generar wallet')
-    } finally {
-      setGenerating(false)
-    }
+    } finally { setGenerating(false) }
   }
 
   const handleCopy = () => {
@@ -460,10 +424,7 @@ function GenerateWalletSection({ onConnected }: { onConnected: (pk: string, sk: 
       {!wallet && !generating && (
         <div className="text-center">
           <p className="text-xs text-slate-400 mb-3">Genera una wallet Testnet automática con 10,000 XLM de prueba</p>
-          <button
-            onClick={handleGenerate}
-            className="w-full py-2.5 border-2 border-dashed border-slate-300 dark:border-slate-500 text-slate-500 dark:text-slate-400 rounded-xl text-sm font-medium hover:border-primary-300 hover:text-primary-500 transition-all"
-          >
+          <button onClick={handleGenerate} className="w-full py-2.5 border-2 border-dashed border-slate-300 dark:border-slate-500 text-slate-500 dark:text-slate-400 rounded-xl text-sm font-medium hover:border-primary-300 hover:text-primary-500 transition-all">
             <FiZap className="w-4 h-4 inline mr-1.5" /> Generar Wallet Testnet
           </button>
         </div>
@@ -482,9 +443,7 @@ function GenerateWalletSection({ onConnected }: { onConnected: (pk: string, sk: 
       {error && (
         <div className="text-center">
           <p className="text-xs text-red-500 mb-2">{error}</p>
-          <button onClick={handleGenerate} className="text-xs text-primary-500 hover:text-primary-600 underline">
-            Reintentar
-          </button>
+          <button onClick={handleGenerate} className="text-xs text-primary-500 hover:text-primary-600 underline">Reintentar</button>
         </div>
       )}
 
@@ -517,9 +476,7 @@ function GenerateWalletSection({ onConnected }: { onConnected: (pk: string, sk: 
           </p>
 
           <div className="flex gap-2">
-            <button onClick={handleUse} className="flex-1 py-2 gradient-primary text-white text-sm font-medium rounded-lg hover:opacity-90 transition-all">
-              Usar esta wallet
-            </button>
+            <button onClick={handleUse} className="flex-1 py-2 gradient-primary text-white text-sm font-medium rounded-lg hover:opacity-90 transition-all">Usar esta wallet</button>
             <button onClick={handleCopy} className="flex items-center gap-1 px-3 py-2 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
               {copied ? <FiCheck className="w-4 h-4" /> : <FiCopy className="w-4 h-4" />}
               {copied ? 'Copiado' : 'Copiar clave'}
